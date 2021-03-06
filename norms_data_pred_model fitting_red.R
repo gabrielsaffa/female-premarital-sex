@@ -3,7 +3,7 @@
 ##########################################################################################################################################
 
 
-### here we will make a reduced sample, i.e. containing only those societies that have data on sex norms, and repeat the same statistical procedure as for the full sample ###
+### here we will create a reduced sample, i.e. containing only those societies that have data on sex norms, and repeat the same statistical procedure as for the full sample ###
 
 setwd ("")
 
