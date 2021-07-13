@@ -97,8 +97,6 @@ write.csv (norms_data, "norms_final.csv")
 #####################
 ### model fitting ###
 
-### sex attitudes
-
 memory.limit (size=200000) # allocate enough memory to R in order to avoid crashing
 
 norms <- read.csv ("norms_final.csv", header=TRUE, row.names=2)
