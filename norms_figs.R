@@ -13,6 +13,7 @@ library (mapdata)
 library (ggmap)
 library (ggridges)
 library (ggpubr)
+library (ggthemes)
 library (grid)
 library (gridExtra)
 library (rethinking)
@@ -29,9 +30,9 @@ norms$sex_norms <- newvals[match(norms$sex_norms, oldvals)]
 norms$sex_norms <- as.factor(norms$sex_norms)
 
 world <- map_data ("world")
-labs_norm <- c ("Strongly sanctioned","Weakly sanctioned","Sanctions if pregnancy","No sanctions")
-cols_norm <- c ("darkorange4","chocolate","goldenrod","yellow2")
-map_norm <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill="grey85", color="grey85") + theme_classic() + labs (x="", y="") + coord_fixed(1.3) + geom_point(data=norms, aes(x=long, y=lat, colour=as.factor(norms[,4])), size=3) + ylim(-65,85) + theme (legend.position="bottom", legend.title=element_blank(), legend.text=element_text(size=16), axis.text.x=element_text(size=16), axis.text.y=element_text(size=16), text=element_text(size=16), plot.margin=unit(c(0,1,0,0),"cm")) + scale_fill_manual (labels=labs_norm, values=cols_norm) + scale_colour_manual (labels=labs_norm, values=cols_norm)
+labs_norm <- c ("No sanctions","Sanctions if pregnancy","Weakly sanctioned","Strongly sanctioned")
+cols_norm <- c ("yellow2","goldenrod","chocolate","darkorange4")
+map_norm <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill="grey85", color="grey85") + theme_minimal() + labs (x="", y="") + coord_fixed(1.3) + geom_point(data=norms, aes(x=long, y=lat, colour=as.factor(norms[,4])), size=3) + ylim(-65,85) + theme (legend.position="bottom", legend.title=element_blank(), legend.text=element_text(size=16), axis.text.x=element_text(size=16), axis.text.y=element_text(size=16), text=element_text(size=16), plot.margin=unit(c(0,1,0,0),"cm")) + scale_fill_manual (labels=labs_norm, values=cols_norm) + scale_colour_manual (labels=labs_norm, values=cols_norm)
 map_norm
 
 dev.off()
@@ -122,7 +123,7 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   ### extramarital sex
   
   phi_link <- function (ext_aff) norm_post_g$bEX*ext_aff # linear function
-  phi <- sapply (seq_x, phi_link) # 
+  phi <- sapply (seq_x, phi_link) # compute predictions across x axis values
   
   plot (NULL, type="n", xlab="extramarital sex (std)", ylab="", xlim=c(-2,2), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=seq(-2,2,length.out = 5), cex.axis=1.75)
@@ -156,8 +157,8 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   
   ### direct care
   
-  phi_link <- function (dir_care) norm_post_g$bDC*dir_care # linear function
-  phi <- sapply (seq_x, phi_link) # 
+  phi_link <- function (dir_care) norm_post_g$bDC*dir_care
+  phi <- sapply (seq_x, phi_link)
   
   plot (NULL, type="n", xlab="direct care (std)", ylab="", xlim=c(-2,2), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=seq(-2,2,length.out = 5), cex.axis=1.75)
@@ -191,7 +192,7 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   ### inheritance
   
   phi_link <- function (inher) norm_post_g$bI*inher
-  phi <- sapply (seq_f, phi_link)  
+  phi <- sapply (seq_f, phi_link)
   
   plot (NULL, type="n", xlab="inheritance", ylab="", xlim=c(0,1), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=c(0.05,0.95), labels=c("absent", "present"), cex.axis=1.75)
@@ -224,8 +225,8 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   
   ### female contribution
   
-  phi_link <- function (fem_cont) norm_post_g$bFC*fem_cont # linear function
-  phi <- sapply (seq_x, phi_link) # 
+  phi_link <- function (fem_cont) norm_post_g$bFC*fem_cont
+  phi <- sapply (seq_x, phi_link)
   
   plot (NULL, type="n", xlab="female contribution (std)", ylab="", xlim=c(-2,2), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=seq(-2,2,length.out = 5), cex.axis=1.75)
@@ -258,8 +259,8 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   
   ### sex ratio
   
-  phi_link <- function (sex_rat) norm_post_g$bSR*sex_rat # linear function
-  phi <- sapply (seq_x, phi_link) # 
+  phi_link <- function (sex_rat) norm_post_g$bSR*sex_rat
+  phi <- sapply (seq_x, phi_link)
   
   plot (NULL, type="n", xlab="sex ratio (std)", ylab="", xlim=c(-2,2), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=seq(-2,2,length.out = 5), cex.axis=1.75)
@@ -293,8 +294,8 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   
   ### parental control
   
-  phi_link <- function (marr_arr) norm_post_g$bMA*marr_arr # linear function
-  phi <- sapply (seq_x, phi_link) # 
+  phi_link <- function (marr_arr) norm_post_g$bMA*marr_arr
+  phi <- sapply (seq_x, phi_link)
   
   plot (NULL, type="n", xlab="parental control (std)", ylab="", xlim=c(-2,2), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=seq(-2,2,length.out = 5), cex.axis=1.75)
@@ -328,7 +329,7 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   ### decision makers
   
   phi_link <- function (dec_mak) norm_post_g$bDM*dec_mak 
-  phi <- sapply (seq_x, phi_link) # 
+  phi <- sapply (seq_x, phi_link)
   
   plot (NULL, type="n", xlab="decision makers (std)", ylab="", xlim=c(-2,2), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=seq(-2,2,length.out = 5), cex.axis=1.75)
@@ -395,8 +396,8 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   
   ### bride-price
   
-  phi_link <- function (bride_pr) norm_post_g$bBP*bride_pr # linear function
-  phi <- sapply (seq_f, phi_link) # 
+  phi_link <- function (bride_pr) norm_post_g$bBP*bride_pr
+  phi <- sapply (seq_f, phi_link)
   
   plot (NULL, type="n", xlab="bride-price", ylab="", xlim=c(0,1), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=c(0.05,0.95), labels=c("absent", "present"), cex.axis=1.75)
@@ -430,8 +431,8 @@ pordlogit_rev <- function (x, phi, a, log=FALSE)
   
   ### gift exchange
   
-  phi_link <- function (gift_ex) norm_post_g$bGE*gift_ex # linear function
-  phi <- sapply (seq_f, phi_link) # 
+  phi_link <- function (gift_ex) norm_post_g$bGE*gift_ex
+  phi <- sapply (seq_f, phi_link)
   
   plot (NULL, type="n", xlab="gift exchange", ylab="", xlim=c(0,1), ylim=c(0,1), yaxt="n", xaxt="n", cex.lab=1.75)
   axis(1, at=c(0.05,0.95), labels=c("absent", "present"), cex.axis=1.75)
